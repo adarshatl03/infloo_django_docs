@@ -17,7 +17,7 @@ The platform operates through two primary interfaces, catering to different user
 ### 2. Mobile API (DRF + WebSockets)
 *Designed for on-the-go interaction and real-time networking.*
 
--   **Authentication**: JWT-based (Access/Refresh tokens) via `/api/v1/users/auth/`.
+-   **Authentication**: JWT-based (Access/Refresh tokens) via `/api/v1/users/auth`.
 -   **Verification**: Upload identity/business proofs for Admin approval (Blue Tick status).
 -   **Networking**: Search users, send connection requests, and build your network.
 -   **Real-time Engagement**:
@@ -55,6 +55,20 @@ The platform operates through two primary interfaces, catering to different user
 5.  **Run Server**:
     ```bash
     python manage.py runserver
+    ```
+    python manage.py runserver
+    ```
+
+### Testing & Verification
+The project includes a comprehensive suite of verification scripts in `scripts/`.
+
+1.  **Run End-to-End Test (Auth, Events, Chat, Cleanup)**:
+    ```bash
+    python scripts/verification/e2e_cleanup.py
+    ```
+2.  **Generate Dummy Data**:
+    ```bash
+    python scripts/data/populate.py
     ```
 
 ### Configuration
@@ -410,7 +424,7 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 ### 4. Events & Notifications
 **Lifecycle**: `Host` -> `Event` -> `Attendees`
 
-1.  **Creation**: User creates an event (`POST /api/v1/events/`).
+1.  **Creation**: User creates an event (`POST /api/v1/events`).
     -   *Trigger**: System finds all `accepted` connections of the Host.
     -   **Alert**: Sends a specific `event` notification to all friends: *"User is hosting..."*.
 2.  **Participation**: Another user RSVPs as `going` or `interested` (`POST /api/v1/events/{id}/join`).
@@ -420,7 +434,7 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 **Scenario & API Flow**:
 > **Scenario**: Alice creates "Summer Gala". Bob joins.
 > **1. Alice Hosts**:
-> `POST /api/v1/events/`
+> `POST /api/v1/events`
 > ```json
 > { "title": "Summer Gala", "date": "2025-06-01T10:00:00Z", "location": "NYC" }
 > ```
@@ -437,9 +451,9 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 ### 5. Stories (Status Updates)
 **Lifecycle**: `User` -> `Story` -> `Access Control`
 
-1.  **Upload**: User uploads an image/video via `POST /api/v1/stories/`.
+1.  **Upload**: User uploads an image/video via `POST /api/v1/stories`.
     -   *Metadata*: `created_at` is set to now. `expires_at` is strictly `now + 24h` (Backend forced).
-2.  **Feed Generation**: When User B requests the feed (`GET /api/v1/stories/`):
+2.  **Feed Generation**: When User B requests the feed (`GET /api/v1/stories`):
     -   System checks: "Is User B connected to User A?" AND "Is Story < 24h old?".
     -   *Result*: Only active stories from friends are returned.
 3.  **Expiration**: Once `now > expires_at`, the story is automatically filtered out from all feeds.
@@ -447,12 +461,12 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 **Scenario & API Flow**:
 > **Scenario**: Alice posts a photo.
 > **1. Upload**:
-> `POST /api/v1/stories/`
+> `POST /api/v1/stories`
 > ```json
 > { "caption": "Morning Coffee", "content_file": "(binary)" }
 > ```
 > **2. Bob Views Feed**:
-> `GET /api/v1/stories/`
+> `GET /api/v1/stories`
 > ```json
 > [
 >   {
@@ -472,7 +486,7 @@ This section outlines the step-by-step logic and interaction flow for key platfo
     -   Flow: Users connect -> Send JSON message -> Server broadcasts to room.
     -   *Purpose*: Instant UI updates (Typing indicators, live bubbles).
 2.  **Persistence** (REST API):
-    -   Endpoint: `POST /api/v1/chat/`
+    -   Endpoint: `POST /api/v1/chat`
     -   Flow: Client sends message payload to API -> Saved to DB (`Message` model).
     -   *Purpose*: Long-term history retrieval (`GET /chat/?user_id=x`).
     -   *Note*: A robust client typically sends to API first, then broadcasts to WS, or lets the server handle the WS broadcast after saving.
@@ -480,7 +494,7 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 **Scenario & API Flow**:
 > **Scenario**: Alice types "Hi Bob".
 > **1. Save to DB**:
-> `POST /api/v1/chat/`
+> `POST /api/v1/chat`
 > ```json
 > { "receiver": 12, "content": "Hi Bob" }
 > ```
@@ -498,13 +512,13 @@ This section outlines the step-by-step logic and interaction flow for key platfo
 ### 7. Notifications Management
 **Lifecycle**: `Event/System` -> `Notification` -> `ReadStatus`
 
-1.  **List**: User checks their alerts (`GET /api/v1/notifications/`).
+1.  **List**: User checks their alerts (`GET /api/v1/notifications`).
 2.  **Action**: User marks an alert as read (`PATCH /api/v1/notifications/{id}/read`).
 
 **Scenario & API Flow**:
 > **Scenario**: Alice views her alerts.
 > **1. Get List**:
-> `GET /api/v1/notifications/`
+> `GET /api/v1/notifications`
 > ```json
 > [ { "id": 99, "type": "follow_request", "message": "Bob wants to follow you", "is_read": false } ]
 > ```

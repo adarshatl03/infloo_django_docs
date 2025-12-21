@@ -17,6 +17,17 @@ Detailed documentation is available in the `docs/` folder:
 - [Application Setup](docs/SETUP.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)
 
+### Recent Updates
+- [Authentication Flow Documentation](.agent/authentication_flow.md) - Comprehensive guide to user authentication
+- [December 21, 2025 Changelog](.agent/CHANGELOG_2025-12-21.md) - Latest features and improvements
+
+### Key Features Added (Dec 2025)
+- ✅ **Standardized Pagination**: Default 10 items per page across all tables
+- ✅ **Dynamic Page Size**: Select from 10, 25, 50, or 100 items per page
+- ✅ **Permission-Based Links**: Links only appear if users have view permissions
+- ✅ **Events Tab Filtering**: Server-side filtering with pagination (All/Past/Ongoing/Upcoming)
+- ✅ **Enhanced UI**: 4px gaps between buttons, improved styling, better accessibility
+
 ---
 
 ## 🔐 Authentication & Authorization

@@ -27,6 +27,9 @@ Detailed documentation is available in the `docs/` folder:
 - ✅ **Permission-Based Links**: Links only appear if users have view permissions
 - ✅ **Events Tab Filtering**: Server-side filtering with pagination (All/Past/Ongoing/Upcoming)
 - ✅ **Enhanced UI**: 4px gaps between buttons, improved styling, better accessibility
+- ✅ **Forgot Password**: OTP-based password reset flow
+- ✅ **Verified-Only Access**: Strict frontend enforcement restricting unverified users from Events/Chat
+
 
 ---
 

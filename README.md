@@ -27,8 +27,8 @@ Detailed documentation is available in the `docs/` folder:
 - ✅ **Permission-Based Links**: Links only appear if users have view permissions
 - ✅ **Events Tab Filtering**: Server-side filtering with pagination (All/Past/Ongoing/Upcoming)
 - ✅ **Enhanced UI**: 4px gaps between buttons, improved styling, better accessibility
-- ✅ **Forgot Password**: OTP-based password reset flow
-- ✅ **Verified-Only Access**: Strict frontend enforcement restricting unverified users from Events/Chat
+- ✅ **Forgot Password**: 6-digit OTP-based reset flow for both Web and REST API.
+- ✅ **Verified Access Control**: Unverified users can browse Events (Read-Only) but are restricted from participating, Chatting, or management until verified.
 
 
 ---
@@ -67,9 +67,10 @@ Authorization: Bearer <access_token>
 - **Flow**: Users upload identity or business documents to get the `is_verified` badge.
 - **Logic**:
     - User uploads a document (Image/PDF).
-    - Status is set to `Pending` initially.
-    - Admin reviews and updates status to `Approved` or `Rejected`.
-    - Once approved, the User's `is_verified` field becomes `True`.
+    - Status is set to `Pending`.
+    - **Unverified Status**: Users can view the **Events List**, their **Profile**, and **Analytics**, but cannot join events, send messages, or create content.
+    - Admin reviews and updates status to `Approved`.
+    - Once approved, the User's `is_verified` field becomes `True`, unlocking all social features.
 
 ### 3. Connections
 - **Flow**: A networking model similar to LinkedIn.
@@ -94,6 +95,19 @@ Authorization: Bearer <access_token>
 - **Flow**: WebSocket-based messaging between users.
 - **Routing**: `ws://<host>/ws/chat/<room_name>/`
 - **Architecture**: Messages are broadcast to the room group and can be persisted in the database.
+
+---
+
+### 🛠️ Maintenance & Reset
+A script is provided to reset the local database and seed it with a fresh ecosystem (Brands, Influencers, Events, etc.).
+
+```bash
+python scripts/reset_db.py
+```
+
+**Initial Credentials**:
+- **Superuser**: `admin` / `Secret@123`
+- **Dashboard Roles**: Brand Manager, Influencer Manager, Content Moderator.
 
 ---
 

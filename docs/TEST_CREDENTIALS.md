@@ -1,6 +1,10 @@
-# Test Credentials
-
 Use these credentials to test the various Role permissions in the Dashboard.
+
+## 0. Superadmin (Reset Script)
+**Username:** `admin`
+**Password:** `Secret@123`
+**Email:** `admin@infloo.in`
+**Capabilities:** Full control, bypasses verification enforcement.
 
 ## 1. Brand Manager
 **Username:** `brand_manager`

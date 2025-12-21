@@ -202,13 +202,34 @@ To manage the Infloo platform effectively, we have designed a **Role-Based Acces
 **GET** `/api/users/profile`
 - **Access**: Authenticated
 - **Response**: User details + Profile (bio, links).
+  ```json
+  {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "phone": "+1234567890",
+      "bio": "Digital content creator",
+      "social_links": {"twitter": "@johndoe"},
+      "company_name": "",
+      "business_category": "",
+      "profile_image": "https://...",
+      "theme": "dark",
+      "user": 1
+  }
+  ```
 
 #### Update Profile
 **PUT / PATCH** `/api/users/profile`
 - **Access**: Authenticated
-- **Payload**:
+- **Payload**: Supports updating both User fields (username, email, phone) and Profile fields.
   ```json
-  { "bio": "Updated bio", "company_name": "New Corp" }
+  {
+      "username": "new_username",
+      "email": "new_email@example.com",
+      "phone": "+9876543210",
+      "bio": "Updated bio",
+      "company_name": "New Corp"
+  }
   ```
 
 #### Verification Upload

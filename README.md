@@ -47,6 +47,7 @@ Authorization: Bearer <access_token>
 - **Flow**: User signs up with email/password and selects a role.
 - **Validation**: Role must be one of `['influencer', 'entrepreneur', 'brand']`.
 - **Profile**: Automatically created upon registration. Users can update bio, social links (Influencers), or business details (Brands).
+    - **Default Image**: If no image is provided, a default placeholder is automatically assigned from `media/default.jpg`.
 
 ### 2. Verification Process
 - **Flow**: Users upload identity or business documents to get the `is_verified` badge.

@@ -7,9 +7,11 @@
 - **Framework**: Django & Django Rest Framework (DRF)
 - **Database**: PostgreSQL
 - **Real-time**: Django Channels (WebSockets) & Redis (Layer)
-- **Authentication**: JWT (SimpleJWT)
+- **Authentication**: JWT (SimpleJWT) + MFA (Two-Factor Auth)
+- **Social**: django-allauth (Google/Facebook integration)
 - **Documentation**: OpenAPI (Drf-spectacular)
 - **Storage**: AWS S3 (Static & Media)
+- **Security**: django-otp & django-two-factor-auth
 
 ## 📚 Documentation
 Detailed documentation is available in the `docs/` folder:
@@ -28,6 +30,8 @@ Detailed documentation is available in the `docs/` folder:
 - ✅ **Events Tab Filtering**: Server-side filtering with pagination (All/Past/Ongoing/Upcoming)
 - ✅ **Enhanced UI**: 4px gaps between buttons, improved styling, better accessibility
 - ✅ **Forgot Password**: 6-digit OTP-based reset flow for both Web and REST API.
+- ✅ **MFA (Multi-Factor Auth)**: Full two-factor authentication support with TOTP (Authenticator Apps).
+- ✅ **Session Tracking**: Active session management and activity monitoring.
 - ✅ **Verified Access Control**: Unverified users can browse Events (Read-Only) but are restricted from participating, Chatting, or management until verified.
 
 
@@ -53,6 +57,16 @@ The system defines four distinct roles, each with specific capabilities:
 Authorization: Bearer <access_token>
 ```
 
+### Multi-Factor Authentication (MFA)
+Users can enable MFA in their profile. We use `django-two-factor-auth` to provide:
+- **TOTP**: Use Google Authenticator or Authy to generate codes.
+- **Backup Codes**: In case the authenticator app is inaccessible.
+
+### Session Management
+The platform tracks all active logins in the `UserSession` model.
+- **Tracking**: IP Address, User Agent, Last Activity, and Activity Status (Active/Idle/Logged Out).
+- **Security**: Admins can view and terminate suspicious sessions.
+
 ---
 
 ## 🔄 Core Workflows
@@ -64,13 +78,13 @@ Authorization: Bearer <access_token>
     - **Default Image**: If no image is provided, a default placeholder is automatically assigned from `media/default.jpg`.
 
 ### 2. Verification Process
-- **Flow**: Users upload identity or business documents to get the `is_verified` badge.
+- **Flow**: Users upload identity or business documents to get the **Identity Verified** badge.
 - **Logic**:
     - User uploads a document (Image/PDF).
     - Status is set to `Pending`.
     - **Unverified Status**: Users can view the **Events List**, their **Profile**, and **Analytics**, but cannot join events, send messages, or create content.
     - Admin reviews and updates status to `Approved`.
-    - Once approved, the User's `is_verified` field becomes `True`, unlocking all social features.
+    - Once approved, the User's `identity_verified` field becomes `True`, unlocking all social features.
 
 ### 3. Connections
 - **Flow**: A networking model similar to LinkedIn.
@@ -127,6 +141,7 @@ To manage the Infloo platform effectively, we have designed a **Role-Based Acces
     4.  Review the `File` (Identity/Business Proof).
     5.  **Action**: Change `Status` to **Approved** or **Rejected**.
     6.  (Optional) Add a note in `Admin Comment`.
+    7.  **Auto-Verification**: Approving a document automatically sets `identity_verified=True` for that user.
 
 ### 2. The "Community Manager" (Moderation Team)
 *Goal: Keep the platform safe and clean.*
@@ -359,8 +374,9 @@ To manage the Infloo platform effectively, we have designed a **Role-Based Acces
 
 ### User (Custom User Model)
 - **Table**: `users_user`
-- **Key Fields**: `username`, `email`, `role`, `is_verified`.
+- **Key Fields**: `username`, `email`, `role`, `identity_verified`.
 - **Validations**: `role` must be in predefined choices.
+- **MFA Status**: `django-otp` dynamically provides `request.user.is_verified` (session-based).
 
 ### Profile
 - **Table**: `users_profile`

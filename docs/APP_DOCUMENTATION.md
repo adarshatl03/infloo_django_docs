@@ -50,14 +50,14 @@ Infloo is a dynamic social engagement platform connecting Influencers, Brands, a
 
 ### ✅ User Verification Workflow
 1.  **User Action**: User goes to **Profile -> Verification Tab** -> Uploads "Identity Proof" or "Business Proof".
-    *   *System State*: Document status = `Pending`. User `is_verified` = `False`.
+    *   *System State*: Document status = `Pending`. User `identity_verified` = `False`.
 2.  **Staff Action**:
     *   Staff (Brand/Influencer Manager) navigates to **Verification** in Sidebar.
     *   Clicks "View File" to inspect the upload.
     *   Clicks **Approve (Green Check)**.
 3.  **Outcome**:
     *   Document status -> `Approved`.
-    *   User `is_verified` -> `True`.
+    *   User `identity_verified` -> `True`.
     *   User sees "Verified" badge on profile.
 
 ### 🚩 Content Moderation Workflow
@@ -76,6 +76,12 @@ Infloo is a dynamic social engagement platform connecting Influencers, Brands, a
 2.  **Engagement**: Conversing via the **Messages** sidebar link.
     *   List of recent conversations is maintained on the left.
 3.  **Real-time**: Leverages Django Channels (WebSockets) for instant message delivery.
+
+### 🔐 Security & MFA Workflow
+1.  **Enabling MFA**: Users can go to **Profile -> Security** to enable Two-Factor Authentication.
+2.  **Setup**: Scan the QR Code using a TOTP app (Google Authenticator, Authy).
+3.  **Verification**: After setup, every login will prompt for a 6-digit code.
+4.  **Staff Requirement**: All Staff roles are recommended to have MFA enabled for dashboard access.
 
 ### 📅 Event Management
 1.  **Creation**: Brand creates an event via Dashboard or API.

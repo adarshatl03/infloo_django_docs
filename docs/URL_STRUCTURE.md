@@ -11,6 +11,13 @@ The Infloo platform URLs have been restructured to remove the `/dashboard` prefi
 - `/logout` - Logout
 - `/home` - Dashboard home (main dashboard view)
 
+### Account & Security (MFA)
+- `/account/two_factor/` - MFA status and setup
+- `/account/two_factor/setup/` - Enable TOTP (QR Code)
+- `/account/two_factor/disable/` - Disable MFA
+- `/account/two_factor/backup/tokens/` - Generate/View backup codes
+- `/account/two_factor/login/` - Second factor challenge during login
+
 ### User Management
 - `/profile` - Current user's profile
 - `/profile/<username>` - View specific user's profile
@@ -106,4 +113,4 @@ If needed, to revert to the old structure:
 4. Revert documentation changes
 
 ---
-*Last Updated: 2025-12-20*
+*Last Updated: 2025-12-23 (Added Account & MFA URLs)*

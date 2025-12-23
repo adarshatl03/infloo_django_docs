@@ -29,7 +29,7 @@ Detailed documentation is available in the `docs/` folder:
 - ✅ **Permission-Based Links**: Links only appear if users have view permissions
 - ✅ **Events Tab Filtering**: Server-side filtering with pagination (All/Past/Ongoing/Upcoming)
 - ✅ **Enhanced UI**: 4px gaps between buttons, improved styling, better accessibility
-- ✅ **Forgot Password**: 6-digit OTP-based reset flow for both Web and REST API.
+- ✅ **Password Reset Email**: Professional HTML email templates with 6-digit OTP, 10-minute expiry, and configurable SMTP/Console backends.
 - ✅ **MFA (Multi-Factor Auth)**: Full two-factor authentication support with TOTP (Authenticator Apps).
 - ✅ **Session Tracking**: Active session management and activity monitoring.
 - ✅ **Verified Access Control**: Unverified users can browse Events (Read-Only) but are restricted from participating, Chatting, or management until verified.
@@ -47,6 +47,11 @@ The system defines four distinct roles, each with specific capabilities:
 2.  **Entrepreneur**: Individuals looking for influencers to promote their ventures.
 3.  **Brand**: Companies seeking partnerships.
 4.  **Staff**: Internal administrators (created via Admin panel).
+
+**Auto-Permission Assignment**: Users are automatically assigned to permission groups based on their role. See [Auto-Permission Assignment Guide](docs/AUTO_PERMISSION_ASSIGNMENT.md) for details.
+
+⚠️ **Deployment**: If deploying updates to the permission system, check the [Permission Migration Guide](docs/deployment/PERMISSION_MIGRATION_GUIDE.md).
+
 
 ### Token Type
 - **Access Token**: Short-lived (default ~5-30 mins). Used in the `Authorization` header.
@@ -212,6 +217,46 @@ To manage the Infloo platform effectively, we have designed a **Role-Based Acces
 - **Access**: Public
 - **Payload**: `{ "refresh": "token_string" }`
 - **Response**: `{ "access": "new_access_token" }`
+
+#### Password Reset Request
+**POST** `/api/users/auth/password_reset`
+- **Access**: Public
+- **Description**: Request a password reset OTP via email
+- **Payload**:
+  ```json
+  { "email": "user@example.com" }
+  ```
+- **Response**: 
+  ```json
+  { "message": "If an account exists, an OTP has been sent to your email." }
+  ```
+- **Email**: Professional HTML email with 6-digit OTP (valid for 10 minutes)
+- **Documentation**: See [Password Reset Email Guide](docs/PASSWORD_RESET_EMAIL.md)
+
+#### Password Reset Confirm
+**POST** `/api/users/auth/password_reset/confirm`
+- **Access**: Public
+- **Description**: Confirm password reset with OTP and set new password
+- **Payload**:
+  ```json
+  {
+    "email": "user@example.com",
+    "otp": "123456",
+    "password": "NewSecurePassword123!"
+  }
+  ```
+- **Response (Success)**: 
+  ```json
+  { "message": "Password reset successful" }
+  ```
+- **Response (Error)**: 
+  ```json
+  { "error": "Invalid OTP or user" }
+  ```
+  or
+  ```json
+  { "error": "OTP expired" }
+  ```
 
 #### Get Profile
 **GET** `/api/users/profile`

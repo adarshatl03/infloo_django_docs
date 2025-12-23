@@ -32,7 +32,9 @@ Detailed documentation is available in the `docs/` folder:
 - ✅ **Password Reset Email**: Professional HTML email templates with 6-digit OTP, 10-minute expiry, and configurable SMTP/Console backends.
 - ✅ **MFA (Multi-Factor Auth)**: Full two-factor authentication support with TOTP (Authenticator Apps).
 - ✅ **Session Tracking**: Active session management and activity monitoring.
-- ✅ **Verified Access Control**: Unverified users can browse Events (Read-Only) but are restricted from participating, Chatting, or management until verified.
+- ✅ **Verified Access Control**: Unverified users can browse Events (Read-Only) but are restricted from participating, Chatting, or administrative tasks until verified.
+- ✅ **Admin Security Suite**: Privacy masking (Chat/PII), Stealth Mode for Superusers, and Anti-deletion safeguards (Protected Groups).
+- ✅ **Auto-Cleanup system**: Automated S3 file deletion for Stories and expiration management command.
 
 
 ---
@@ -122,6 +124,12 @@ A script is provided to reset the local database and seed it with a fresh ecosys
 
 ```bash
 python scripts/reset_db.py
+```
+
+### 🚀 Initialization (New DB)
+For setting up a fresh environment with migrations, system types, and superuser:
+```bash
+./scripts/init_project.sh
 ```
 
 **Initial Credentials**:
